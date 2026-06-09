@@ -148,6 +148,12 @@ Versiones modernas de escritorio (2020 en adelante).
 
 ---
 
+## Cache busting
+
+Cada vez que se inicia un sorteo, `base.pdf` se carga con un timestamp único en la URL (`?v=1234567890`). Esto garantiza que el navegador y Vercel nunca sirvan una versión cacheada: si reemplazás el archivo entre sorteos, la próxima ejecución siempre leerá los datos más recientes.
+
+---
+
 ## Resolución de problemas
 
 | Síntoma | Solución |

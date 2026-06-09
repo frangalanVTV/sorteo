@@ -2,9 +2,8 @@
    VARIABLES — ajustá aquí colores, tamaños y tiempos
    ============================================================ */
 :root {
-  --verde:          #489043;   /* fondo principal */
-  --verde-luz:      #62d258;   /* acento luminoso */
-  --celeste:        #66b8c4;   /* texto del botón SORTEO */
+  --fondo:          #343434;   /* fondo principal */
+  --dorado:         #967a2c;   /* botón principal */
   --blanco:         #ffffff;
 
   --bombo-ext:      380px;
@@ -59,7 +58,7 @@ html, body {
 }
 
 body {
-  background-color: var(--verde);
+  background-color: var(--fondo);
   font-family: var(--fuente-bold);
   color: var(--blanco);
   display: flex;
@@ -185,7 +184,7 @@ code {
   height: 80px;
   margin-top: -40px;
   margin-left: -40px;
-  border-color: rgba(102, 184, 196, 0.30);
+  border-color: rgba(255, 255, 255, 0.28);
   animation: ondaChica 3s ease-out infinite;
 }
 
@@ -222,7 +221,7 @@ code {
 }
 
 .header-logo {
-  height: 46px;   /* 38px × 1.2 */
+  height: 75px;   /* 46px × 1.2 */
   width: auto;
   opacity: 0.90;
 }
@@ -308,8 +307,17 @@ code {
    BOTÓN PRINCIPAL — SORTEO
    ============================================================ */
 .btn-principal {
-  background: var(--blanco);
-  color: var(--celeste);
+  background: linear-gradient(
+    160deg,
+    #c9a84c 0%,
+    #a8862e 18%,
+    #967a2c 36%,
+    #c4a040 52%,
+    #7d641c 68%,
+    #b89236 84%,
+    #967a2c 100%
+  );
+  color: var(--blanco);
   border: none;
   padding: 36px 135px;
   font-family: var(--fuente-bold);
@@ -319,12 +327,11 @@ code {
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
-  /* Respiración: glow celeste que pulsa + sombra viva */
   animation: respirarBoton 3.2s ease-in-out infinite;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-/* Barrido de luz — pasa de izquierda a derecha cada ~5 s */
+/* Barrido de luz dorada — pasa de izquierda a derecha cada ~5 s */
 .btn-principal::after {
   content: '';
   position: absolute;
@@ -335,8 +342,8 @@ code {
   background: linear-gradient(
     108deg,
     transparent 20%,
-    rgba(102, 184, 196, 0.13) 50%,
-    rgba(255, 255, 255, 0.10) 60%,
+    rgba(255, 220, 100, 0.22) 50%,
+    rgba(255, 248, 200, 0.20) 60%,
     transparent 80%
   );
   animation: shimmerBoton 5s ease-in-out infinite;
@@ -346,13 +353,13 @@ code {
 @keyframes respirarBoton {
   0%, 100% {
     box-shadow:
-      0  4px 30px rgba(0, 0, 0, 0.10),
-      0  0   0   0   rgba(102, 184, 196, 0);
+      0  4px 30px rgba(0, 0, 0, 0.30),
+      0  0   0   0   rgba(180, 148, 60, 0);
   }
   50% {
     box-shadow:
-      0  8px 44px rgba(0, 0, 0, 0.14),
-      0  0  52px 10px rgba(102, 184, 196, 0.22);
+      0  8px 44px rgba(0, 0, 0, 0.35),
+      0  0  52px 10px rgba(180, 148, 60, 0.40);
   }
 }
 
@@ -367,8 +374,8 @@ code {
   transform: translateY(-3px);
   animation-play-state: paused;
   box-shadow:
-    0 10px 50px rgba(0, 0, 0, 0.16),
-    0  0  60px 12px rgba(102, 184, 196, 0.28);
+    0 10px 50px rgba(0, 0, 0, 0.38),
+    0  0  60px 12px rgba(180, 148, 60, 0.48);
 }
 
 .btn-principal:active {
@@ -455,11 +462,13 @@ code {
 /* ---- Bombo ANIMANDO ---- */
 .bombo.animando .bombo-anillo {
   background: conic-gradient(
-    rgba(255, 255, 255, 0.50) 0deg,
-    rgba(255, 255, 255, 0.06) 100deg,
-    rgba(255, 255, 255, 0.04) 200deg,
-    rgba(255, 255, 255, 0.18) 300deg,
-    rgba(255, 255, 255, 0.50) 360deg
+    rgba(201, 168, 76, 0.90) 0deg,
+    rgba(255, 255, 255, 0.35) 60deg,
+    rgba(150, 122, 44, 0.12) 130deg,
+    rgba(255, 255, 255, 0.08) 200deg,
+    rgba(196, 160, 64, 0.50) 270deg,
+    rgba(255, 255, 255, 0.30) 320deg,
+    rgba(201, 168, 76, 0.90) 360deg
   );
   border: none;
   animation: rotarAnillo 4s linear infinite;
@@ -474,8 +483,8 @@ code {
 }
 
 @keyframes pulsarAgua {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(98, 210, 88, 0); }
-  50%       { box-shadow: 0 0 28px 4px rgba(98, 210, 88, 0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(180, 148, 60, 0); }
+  50%       { box-shadow: 0 0 32px 6px rgba(180, 148, 60, 0.28); }
 }
 
 
@@ -494,7 +503,7 @@ code {
   font-family: var(--fuente-bold);
   font-weight: 700;
   font-size: clamp(13px, 1.8vw, 19px);
-  color: rgba(255, 255, 255, 0.90);
+  color: rgba(201, 168, 76, 0.95);
   text-align: center;
   letter-spacing: 0.05em;
   line-height: 1.3;
@@ -521,7 +530,7 @@ code {
   width: 70vmin;
   height: 70vmin;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(98, 210, 88, 0.22) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
   pointer-events: none;
   opacity: 0;
   animation: brilloFondo 2.5s 0.3s ease-out forwards,
@@ -555,7 +564,7 @@ code {
   margin-top: -70px;
   margin-left: -70px;
   border-radius: 50%;
-  border: 1px solid rgba(98, 210, 88, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   opacity: 0;
   animation: expandirAnillo 3.2s ease-out infinite;
 }
@@ -566,7 +575,7 @@ code {
 .festivo-anillo:nth-child(4) { animation-delay: 2.5s; }
 
 @keyframes expandirAnillo {
-  0%   { transform: scale(1);   opacity: 0.65; }
+  0%   { transform: scale(1);   opacity: 0.18; }
   100% { transform: scale(7.5); opacity: 0;    }
 }
 
@@ -585,8 +594,6 @@ code {
 
 /* Composición */
 .resultado-wrap {
-  position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -594,12 +601,25 @@ code {
   gap: 24px;
 }
 
-.resultado-etiqueta {
+/* Contenedor unificado — se mueve como bloque */
+.resultado-composicion {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  margin-top: 80px;
+}
+
+.resultado-felicitaciones {
+  white-space: nowrap;
   font-family: var(--fuente-bold);
   font-weight: 700;
-  font-size: clamp(36px, 5vw, 64px);
-  letter-spacing: 0.36em;
-  color: rgba(255, 255, 255, 0.50);
+  font-size: clamp(40px, 6vw, 84px);
+  letter-spacing: 0.38em;
+  color: var(--dorado);
+  text-decoration: underline;
   opacity: 0;
   animation: bajarTitulo 0.75s 0.2s ease forwards;
 }
@@ -628,7 +648,7 @@ code {
   font-family: var(--fuente-bold);
   font-weight: 700;
   font-size: clamp(28px, 4vw, 54px);
-  color: var(--blanco);
+  color: var(--dorado);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1.2;

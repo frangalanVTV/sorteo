@@ -79,11 +79,13 @@ function mostrarEstado(id) {
  * participantes válidos (columna SORTEO vacía o ausente).
  */
 async function cargarParticipantes() {
-  console.log('[Sorteo] Cargando PDF:', CONFIG.archivoPDF);
+  /* Timestamp en la URL para evitar que el navegador use una versión cacheada */
+  const pdfUrl = `${CONFIG.archivoPDF}?v=${Date.now()}`;
+  console.log('[Sorteo] Cargando PDF:', pdfUrl);
 
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.min.js';
 
-  const pdf = await pdfjsLib.getDocument(CONFIG.archivoPDF).promise;
+  const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
   console.log('[Sorteo] Páginas en el PDF:', pdf.numPages);
 
   /* Extraer todos los items de texto de todas las páginas */
@@ -315,12 +317,31 @@ function mostrarEnRuleta(nombre) {
 }
 
 /**
- * Inicia la animación de nombres.
- * El ganador se elige al inicio. En la última fase, los últimos dos slots
- * muestran al ganador para que el resultado se sienta coherente.
+ * Inicia el sorteo: recarga base.pdf con cache busting, elige ganador y anima.
+ * Cada click lee siempre la versión más reciente del PDF.
  */
-function iniciarSorteo() {
-  if (!participantes.length) return;
+async function iniciarSorteo() {
+  if (el.btnSorteo.disabled) return;
+  el.btnSorteo.disabled = true;
+
+  /* Lectura fresca del PDF antes de cada sorteo */
+  try {
+    const listaFresca = await cargarParticipantes();
+    if (!listaFresca || !listaFresca.length) {
+      mostrarError('No se encontraron participantes válidos.');
+      el.btnSorteo.disabled = false;
+      return;
+    }
+    participantes = listaFresca;
+    el.infoParticipantes.textContent =
+      `${participantes.length} participante${participantes.length !== 1 ? 's' : ''} en el sorteo`;
+    console.log('[Sorteo] PDF recargado. Participantes:', participantes.length);
+  } catch (err) {
+    console.error('[Sorteo] Error al recargar PDF:', err);
+    mostrarError('No se pudo leer la base del sorteo.');
+    el.btnSorteo.disabled = false;
+    return;
+  }
 
   const ganador = participantes[Math.floor(Math.random() * participantes.length)];
   console.log('[Sorteo] Ganador elegido:', ganador);
@@ -373,7 +394,7 @@ function mostrarGanador(nombre) {
   el.nombreGanador.textContent = formatearNombre(nombre);
 
   /* Reiniciar animaciones CSS de los elementos del resultado */
-  const selectores = ['.resultado-caja', '.resultado-etiqueta', '.btn-secundario',
+  const selectores = ['.resultado-caja', '.resultado-felicitaciones', '.btn-secundario',
                       '.festivo-brillo', '.festivo-anillo'];
   selectores.forEach(sel => {
     document.querySelectorAll(sel).forEach(elem => {
@@ -393,10 +414,10 @@ function mostrarGanador(nombre) {
 function lanzarParticulasGanador() {
   const contenedor = document.getElementById('estado-resultado');
   const colores = [
-    'rgba(255,255,255,0.70)',
-    'rgba(98,210,88,0.65)',
-    'rgba(102,184,196,0.60)',
-    'rgba(255,255,255,0.45)',
+    'rgba(255,255,255,0.75)',
+    'rgba(255,255,255,0.60)',
+    'rgba(255,255,255,0.50)',
+    'rgba(255,255,255,0.38)',
   ];
 
   /* Limpiar partículas de una corrida anterior */
@@ -462,6 +483,7 @@ function mostrarError(msg) {
 el.btnSorteo.addEventListener('click', iniciarSorteo);
 
 el.btnOtroSorteo.addEventListener('click', () => {
+  el.btnSorteo.disabled = false;
   mostrarEstado('estado-inicial');
 });
 
