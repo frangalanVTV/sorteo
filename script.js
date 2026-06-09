@@ -343,8 +343,18 @@ async function iniciarSorteo() {
     return;
   }
 
+  /*
+   * LA ANIMACIÓN ES SOLO VISUAL.
+   * El ganador se elige aquí, una única vez, aplicando Math.random()
+   * sobre el array completo de participantes válidos extraído de base.pdf.
+   * Cada participante tiene exactamente 1/N de probabilidad de ganar.
+   * Los nombres que aparecen durante la animación son muestreos aleatorios
+   * del mismo array con fines puramente visuales: no condicionan ni limitan
+   * quién puede ganar. El resultado revelado siempre es esta variable.
+   */
   const ganador = participantes[Math.floor(Math.random() * participantes.length)];
-  console.log('[Sorteo] Ganador elegido:', ganador);
+  console.log('[Sorteo] Ganador elegido:', ganador,
+    `(1 de ${participantes.length} participantes)`);
 
   mostrarEstado('estado-animacion');
   el.bomboAnimacion.classList.add('animando');
@@ -362,13 +372,15 @@ async function iniciarSorteo() {
 
     const fase          = CONFIG.fases[faseActual];
     const esUltimaFase  = faseActual === CONFIG.fases.length - 1;
-    /* Umbral a partir del cual solo aparece el ganador en la última fase */
+    /* En los últimos 2 ticks de la fase final se muestra el ganador real
+       para que la desaceleración visual coincida con el resultado. */
     const umbralGanador = Math.max(0, fase.duracion - fase.intervalo * 2);
     let tiempoFase      = 0;
 
     intervalRef = setInterval(() => {
       tiempoFase += fase.intervalo;
 
+      /* Nombres visuales: aleatorios del array completo, excepto al final */
       const nombre = (esUltimaFase && tiempoFase >= umbralGanador)
         ? ganador
         : participantes[Math.floor(Math.random() * participantes.length)];
