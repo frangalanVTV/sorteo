@@ -33,7 +33,6 @@ const el = {
   btnSorteo:        document.getElementById('btn-sorteo'),
   btnOtroSorteo:    document.getElementById('btn-otro-sorteo'),
 
-  infoParticipantes: document.getElementById('info-participantes'),
   nombreGirando:    document.getElementById('nombre-girando'),
   nombreGanador:    document.getElementById('nombre-ganador'),
   mensajeError:     document.getElementById('mensaje-error'),
@@ -333,8 +332,6 @@ async function iniciarSorteo() {
       return;
     }
     participantes = listaFresca;
-    el.infoParticipantes.textContent =
-      `${participantes.length} participante${participantes.length !== 1 ? 's' : ''} en el sorteo`;
     console.log('[Sorteo] PDF recargado. Participantes:', participantes.length);
   } catch (err) {
     console.error('[Sorteo] Error al recargar PDF:', err);
@@ -470,9 +467,6 @@ async function init() {
       mostrarError('No se encontraron participantes válidos.');
       return;
     }
-
-    el.infoParticipantes.textContent =
-      `${participantes.length} participante${participantes.length !== 1 ? 's' : ''} en el sorteo`;
 
     mostrarEstado('estado-inicial');
     console.log('[Sorteo] Listo. Participantes cargados:', participantes.length);
