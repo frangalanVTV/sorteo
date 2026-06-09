@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorteo — Banco Provincia</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Capa decorativa de fondo -->
+  <div class="deco-fondo" aria-hidden="true">
+    <svg class="deco-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Blobs -->
+      <circle cx="110"  cy="180"  r="72"  class="deco-blob"/>
+      <circle cx="1810" cy="130"  r="50"  class="deco-blob deco-b2"/>
+      <circle cx="1760" cy="920"  r="95"  class="deco-blob deco-b3"/>
+      <circle cx="140"  cy="870"  r="60"  class="deco-blob deco-b4"/>
+      <circle cx="960"  cy="55"   r="35"  class="deco-blob deco-b5"/>
+      <circle cx="580"  cy="960"  r="55"  class="deco-blob deco-b6"/>
+      <circle cx="1350" cy="980"  r="40"  class="deco-blob deco-b7"/>
+      <!-- Anillos -->
+      <circle cx="290"  cy="580"  r="100" class="deco-anillo"/>
+      <circle cx="1660" cy="480"  r="80"  class="deco-anillo deco-a2"/>
+      <circle cx="900"  cy="1020" r="55"  class="deco-anillo deco-a3"/>
+      <circle cx="1500" cy="700"  r="130" class="deco-anillo deco-a4"/>
+      <circle cx="420"  cy="350"  r="70"  class="deco-anillo deco-a5"/>
+      <!-- Monedas -->
+      <circle cx="400"  cy="200"  r="18"  class="deco-moneda"/>
+      <circle cx="1550" cy="250"  r="14"  class="deco-moneda deco-m2"/>
+      <circle cx="1680" cy="780"  r="20"  class="deco-moneda deco-m3"/>
+      <circle cx="240"  cy="700"  r="12"  class="deco-moneda deco-m4"/>
+      <circle cx="850"  cy="150"  r="10"  class="deco-moneda deco-m5"/>
+      <circle cx="1200" cy="850"  r="16"  class="deco-moneda deco-m6"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <header class="header" aria-label="Banco Provincia">
+    <img src="logo_source.png" alt="" class="header-logo">
+  </header>
+
+  <!-- ====================== ESTADOS ====================== -->
+  <main class="main" id="main">
+
+    <!-- CARGANDO -->
+    <div id="estado-cargando" class="estado activo" role="status" aria-live="polite">
+      <div class="cargando-wrap">
+        <div class="cargando-spinner"></div>
+        <p class="cargando-texto">Cargando participantes…</p>
+      </div>
+    </div>
+
+    <!-- INICIAL — ondas expansivas + botón -->
+    <div id="estado-inicial" class="estado" aria-label="Pantalla de inicio del sorteo">
+
+      <!-- Ondas de señal que emanan desde el centro -->
+      <div class="ondas" aria-hidden="true">
+        <span class="onda"></span>
+        <span class="onda"></span>
+        <span class="onda"></span>
+        <span class="onda"></span>
+        <span class="onda"></span>
+        <span class="onda onda-chica"></span>
+        <span class="onda onda-chica"></span>
+        <span class="onda onda-chica"></span>
+      </div>
+
+      <div class="composicion-inicial">
+        <button id="btn-sorteo" class="btn-principal" type="button">INICIAR SORTEO</button>
+        <p id="info-participantes" class="info-participantes"></p>
+      </div>
+    </div>
+
+    <!-- ANIMANDO — con bombo -->
+    <div id="estado-animacion" class="estado" aria-live="polite" aria-label="Sorteo en progreso">
+      <div class="composicion-central">
+        <div class="bombo animando" id="bombo-animacion" aria-hidden="true">
+          <div class="bombo-anillo"></div>
+          <div class="bombo-agua">
+            <div class="ruleta-contenedor">
+              <p id="nombre-girando" class="nombre-ruleta"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="estado-resultado" class="estado" aria-live="assertive" aria-label="Resultado del sorteo">
+      <!-- Brillo radial de fondo festivo -->
+      <div class="festivo-brillo" aria-hidden="true"></div>
+      <!-- Anillos expansivos festivos -->
+      <div class="festivo" aria-hidden="true">
+        <span class="festivo-anillo"></span>
+        <span class="festivo-anillo"></span>
+        <span class="festivo-anillo"></span>
+        <span class="festivo-anillo"></span>
+      </div>
+
+      <div class="resultado-wrap">
+        <p class="resultado-etiqueta">GANADOR</p>
+        <div class="resultado-caja">
+          <p id="nombre-ganador" class="resultado-nombre"></p>
+        </div>
+        <button id="btn-otro-sorteo" class="btn-secundario" type="button">
+          REALIZAR OTRO SORTEO
+        </button>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div id="estado-error" class="estado" role="alert" aria-label="Error en la carga">
+      <div class="error-wrap">
+        <p class="error-icono">—</p>
+        <p id="mensaje-error" class="error-texto"></p>
+        <p class="error-ayuda">Verificá que <code>base.pdf</code> esté en la raíz del proyecto<br>y que el sitio esté corriendo desde un servidor local.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="libs/pdf.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

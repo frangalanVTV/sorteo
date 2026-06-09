@@ -1,0 +1,709 @@
+/* ============================================================
+   VARIABLES — ajustá aquí colores, tamaños y tiempos
+   ============================================================ */
+:root {
+  --verde:          #489043;   /* fondo principal */
+  --verde-luz:      #62d258;   /* acento luminoso */
+  --celeste:        #66b8c4;   /* texto del botón SORTEO */
+  --blanco:         #ffffff;
+
+  --bombo-ext:      380px;
+  --bombo-int:      280px;
+
+  --fuente-bold:    'EncodeSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --fuente-regular: 'EncodeSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+
+/* ============================================================
+   FUENTES LOCALES
+   ============================================================ */
+@font-face {
+  font-family: 'EncodeSans';
+  src: url('Fonts/EncodeSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EncodeSans';
+  src: url('Fonts/EncodeSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MinionVariable';
+  src: url('Fonts/MinionVariableConcept-Roman.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ============================================================
+   RESET Y BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--verde);
+  font-family: var(--fuente-bold);
+  color: var(--blanco);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--fuente-bold);
+  border: none;
+  background: none;
+}
+
+button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 4px;
+}
+
+code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+
+/* ============================================================
+   DECORACIONES DE FONDO — blancas muy sutiles sobre el verde
+   ============================================================ */
+.deco-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.deco-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.deco-blob {
+  fill: rgba(255, 255, 255, 0.06);
+  animation: flotar-a 9s ease-in-out infinite;
+}
+.deco-b2 { animation-duration: 12s; animation-delay: -3s;  }
+.deco-b3 { animation-duration: 10s; animation-delay: -6s;  }
+.deco-b4 { animation-duration: 14s; animation-delay: -2s;  opacity: 0.7; }
+.deco-b5 { animation-duration:  8s; animation-delay: -4s;  opacity: 0.5; }
+.deco-b6 { animation-duration: 11s; animation-delay: -7s;  }
+.deco-b7 { animation-duration: 13s; animation-delay: -1s;  opacity: 0.6; }
+
+@keyframes flotar-a {
+  0%, 100% { transform: translateY(0);     }
+  50%       { transform: translateY(-22px); }
+}
+
+.deco-anillo {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+  animation: flotar-a 11s ease-in-out infinite;
+}
+.deco-a2 { animation-duration: 15s; animation-delay: -5s; }
+.deco-a3 { animation-duration:  9s; animation-delay: -1s; }
+.deco-a4 { animation-duration: 13s; animation-delay: -8s; stroke: rgba(255,255,255,0.05); }
+.deco-a5 { animation-duration:  7s; animation-delay: -3s; }
+
+.deco-moneda {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1.5;
+  animation: flotar-b 7s ease-in-out infinite;
+}
+.deco-m2 { animation-duration: 10s; animation-delay: -3s; }
+.deco-m3 { animation-duration:  8s; animation-delay: -5s; }
+.deco-m4 { animation-duration: 11s; animation-delay: -2s; }
+.deco-m5 { animation-duration:  6s; animation-delay: -1s; }
+.deco-m6 { animation-duration: 13s; animation-delay: -9s; }
+
+@keyframes flotar-b {
+  0%, 100% { transform: translateY(0)     rotate(0deg); }
+  50%       { transform: translateY(-14px) rotate(8deg); }
+}
+
+
+/* ============================================================
+   ONDAS EXPANSIVAS — emanan desde el centro hacia afuera
+   ============================================================ */
+.ondas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ondas grandes — recorren toda la pantalla */
+.onda {
+  display: block;
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  margin-top: -80px;
+  margin-left: -80px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  animation: ondaGrande 5s ease-out infinite;
+}
+
+.onda:nth-child(1) { animation-delay: 0.0s; }
+.onda:nth-child(2) { animation-delay: 1.0s; }
+.onda:nth-child(3) { animation-delay: 2.0s; }
+.onda:nth-child(4) { animation-delay: 3.0s; }
+.onda:nth-child(5) { animation-delay: 4.0s; }
+
+/* Ondas chicas — más rápidas, cerca del botón */
+.onda-chica {
+  width: 80px;
+  height: 80px;
+  margin-top: -40px;
+  margin-left: -40px;
+  border-color: rgba(102, 184, 196, 0.30);
+  animation: ondaChica 3s ease-out infinite;
+}
+
+.onda-chica:nth-child(6) { animation-delay: 0.0s; }
+.onda-chica:nth-child(7) { animation-delay: 1.0s; }
+.onda-chica:nth-child(8) { animation-delay: 2.0s; }
+
+@keyframes ondaGrande {
+  0%   { transform: scale(1);   opacity: 0;    }
+  5%   { opacity: 0.28; }
+  100% { transform: scale(7.5); opacity: 0;    }
+}
+
+@keyframes ondaChica {
+  0%   { transform: scale(1);   opacity: 0;   }
+  8%   { opacity: 0.40; }
+  100% { transform: scale(5);   opacity: 0;   }
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 32px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.header-logo {
+  height: 46px;   /* 38px × 1.2 */
+  width: auto;
+  opacity: 0.90;
+}
+
+
+/* ============================================================
+   MAIN y SISTEMA DE ESTADOS
+   ============================================================ */
+.main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estado {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.55s ease, visibility 0.55s ease;
+}
+
+.estado.activo {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* ============================================================
+   ESTADO: CARGANDO
+   ============================================================ */
+.cargando-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.cargando-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: girar 0.9s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+.cargando-texto {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   ESTADO: INICIAL — solo el botón, centrado
+   ============================================================ */
+.composicion-inicial {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+
+/* ============================================================
+   BOTÓN PRINCIPAL — SORTEO
+   ============================================================ */
+.btn-principal {
+  background: var(--blanco);
+  color: var(--celeste);
+  border: none;
+  padding: 36px 135px;
+  font-family: var(--fuente-bold);
+  font-weight: 700;
+  font-size: 33px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  /* Respiración: glow celeste que pulsa + sombra viva */
+  animation: respirarBoton 3.2s ease-in-out infinite;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Barrido de luz — pasa de izquierda a derecha cada ~5 s */
+.btn-principal::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -110%;
+  width: 55%;
+  height: 140%;
+  background: linear-gradient(
+    108deg,
+    transparent 20%,
+    rgba(102, 184, 196, 0.13) 50%,
+    rgba(255, 255, 255, 0.10) 60%,
+    transparent 80%
+  );
+  animation: shimmerBoton 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes respirarBoton {
+  0%, 100% {
+    box-shadow:
+      0  4px 30px rgba(0, 0, 0, 0.10),
+      0  0   0   0   rgba(102, 184, 196, 0);
+  }
+  50% {
+    box-shadow:
+      0  8px 44px rgba(0, 0, 0, 0.14),
+      0  0  52px 10px rgba(102, 184, 196, 0.22);
+  }
+}
+
+@keyframes shimmerBoton {
+  0%, 18%  { left: -110%; opacity: 0; }
+  20%      { opacity: 1; }
+  54%      { left: 115%; opacity: 0; }
+  100%     { left: 115%; opacity: 0; }
+}
+
+.btn-principal:hover {
+  transform: translateY(-3px);
+  animation-play-state: paused;
+  box-shadow:
+    0 10px 50px rgba(0, 0, 0, 0.16),
+    0  0  60px 12px rgba(102, 184, 196, 0.28);
+}
+
+.btn-principal:active {
+  transform: translateY(0);
+  opacity: 0.88;
+}
+
+
+/* ============================================================
+   INFO PARTICIPANTES
+   ============================================================ */
+.info-participantes {
+  font-family: var(--fuente-regular);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.40);
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   COMPOSICIÓN CENTRAL (estado animando)
+   ============================================================ */
+.composicion-central {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+
+/* ============================================================
+   BOMBO — solo visible en estado ANIMANDO
+   ============================================================ */
+.bombo {
+  position: relative;
+  width: var(--bombo-ext);
+  height: var(--bombo-ext);
+  flex-shrink: 0;
+}
+
+/* Anillo exterior — conic gradient para que la rotación sea visible */
+.bombo-anillo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  z-index: 1;
+}
+
+/* Círculo interior — agua */
+.bombo-agua {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--bombo-int);
+  height: var(--bombo-int);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Reflejo de luz sutil */
+.bombo-agua::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 18%;
+  width: 36%;
+  height: 20%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.10) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ---- Bombo ANIMANDO ---- */
+.bombo.animando .bombo-anillo {
+  background: conic-gradient(
+    rgba(255, 255, 255, 0.50) 0deg,
+    rgba(255, 255, 255, 0.06) 100deg,
+    rgba(255, 255, 255, 0.04) 200deg,
+    rgba(255, 255, 255, 0.18) 300deg,
+    rgba(255, 255, 255, 0.50) 360deg
+  );
+  border: none;
+  animation: rotarAnillo 4s linear infinite;
+}
+
+.bombo.animando .bombo-agua {
+  animation: pulsarAgua 1.4s ease-in-out infinite;
+}
+
+@keyframes rotarAnillo {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulsarAgua {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(98, 210, 88, 0); }
+  50%       { box-shadow: 0 0 28px 4px rgba(98, 210, 88, 0.18); }
+}
+
+
+/* ============================================================
+   RULETA DE NOMBRES
+   ============================================================ */
+.ruleta-contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84%;
+  padding: 0 16px;
+}
+
+.nombre-ruleta {
+  font-family: var(--fuente-bold);
+  font-weight: 700;
+  font-size: clamp(13px, 1.8vw, 19px);
+  color: rgba(255, 255, 255, 0.90);
+  text-align: center;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  word-break: break-word;
+  transition: opacity 0.06s ease;
+}
+
+.nombre-ruleta.oculto {
+  opacity: 0;
+}
+
+
+/* ============================================================
+   ESTADO: RESULTADO
+   ============================================================ */
+
+/* Brillo radial de fondo — aparece y respira */
+.festivo-brillo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vmin;
+  height: 70vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(98, 210, 88, 0.22) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  animation: brilloFondo 2.5s 0.3s ease-out forwards,
+             respirarBrillo 4s 2.8s ease-in-out infinite;
+}
+
+@keyframes brilloFondo {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  60%  { opacity: 1; }
+  100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes respirarBrillo {
+  0%, 100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1);    }
+  50%       { opacity: 0.70; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+/* Anillos expansivos */
+.festivo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.festivo-anillo {
+  display: block;
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  margin-top: -70px;
+  margin-left: -70px;
+  border-radius: 50%;
+  border: 1px solid rgba(98, 210, 88, 0.65);
+  opacity: 0;
+  animation: expandirAnillo 3.2s ease-out infinite;
+}
+
+.festivo-anillo:nth-child(1) { animation-delay: 0.1s; }
+.festivo-anillo:nth-child(2) { animation-delay: 0.9s; }
+.festivo-anillo:nth-child(3) { animation-delay: 1.7s; }
+.festivo-anillo:nth-child(4) { animation-delay: 2.5s; }
+
+@keyframes expandirAnillo {
+  0%   { transform: scale(1);   opacity: 0.65; }
+  100% { transform: scale(7.5); opacity: 0;    }
+}
+
+/* Partículas (creadas por JS) */
+.particula-festiva {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: subirParticula var(--dur, 2.5s) ease-out forwards;
+}
+
+@keyframes subirParticula {
+  0%   { transform: translateY(0) scale(1);    opacity: 0.75; }
+  100% { transform: translateY(-160px) scale(0); opacity: 0;   }
+}
+
+/* Composición */
+.resultado-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.resultado-etiqueta {
+  font-family: var(--fuente-bold);
+  font-weight: 700;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: 0.36em;
+  color: rgba(255, 255, 255, 0.50);
+  opacity: 0;
+  animation: bajarTitulo 0.75s 0.2s ease forwards;
+}
+
+@keyframes bajarTitulo {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+/* Caja del nombre — minimalista, borde fino */
+.resultado-caja {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 34px 68px;
+  max-width: 80vw;
+  opacity: 0;
+  animation: subirCaja 0.85s 0.6s ease forwards;
+}
+
+@keyframes subirCaja {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.resultado-nombre {
+  font-family: var(--fuente-bold);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 54px);
+  color: var(--blanco);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  word-break: break-word;
+  /* pulsación elegante del nombre */
+  animation: pulsarNombre 2.5s 1.5s ease-in-out infinite;
+}
+
+@keyframes pulsarNombre {
+  0%, 100% { opacity: 1;    transform: scale(1);     }
+  50%       { opacity: 0.92; transform: scale(1.008); }
+}
+
+/* Botón secundario — coherente con estilo premium */
+.btn-secundario {
+  font-family: var(--fuente-bold);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.20em;
+  color: rgba(255, 255, 255, 0.65);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 13px 40px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: aparecerBoton 0.5s 1.4s ease forwards;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secundario:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--blanco);
+  border-color: rgba(255, 255, 255, 0.50);
+}
+
+.btn-secundario:active {
+  opacity: 0.75;
+}
+
+@keyframes aparecerBoton {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* ============================================================
+   ESTADO: ERROR
+   ============================================================ */
+.error-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding: 48px;
+  max-width: 520px;
+}
+
+.error-icono {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.3em;
+}
+
+.error-texto {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.80);
+  line-height: 1.5;
+}
+
+.error-ayuda {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.40);
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}

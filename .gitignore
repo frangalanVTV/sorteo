@@ -1,0 +1,7 @@
+.DS_Store
+IMAGENES_REF/
+base_backup.pdf
+# Fuentes del sistema no referenciadas en el CSS
+Fonts/Helvetica.ttc
+Fonts/HelveticaNeue.ttc
+Fonts/HelveLTMM
